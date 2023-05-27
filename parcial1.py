@@ -60,7 +60,7 @@ def buscar_jugador_por_nombre(string:str)->str:
     elif(re.search(r"^[C-c]hrist.+|[L-l]aet.+$", nombre) != None):
         nombre = "Christian Laettner"
     else:
-        return "[ERROR]: No se a podido encontra ese jugador"
+        return "\n[ERROR]: No se a podido encontra ese jugador"
     
     return nombre
 
@@ -640,10 +640,10 @@ while Flag:
         case 2:
             indice = input("Ingrese el numero de indice de el jugador:")
             patron = r"^[\d]+$"
-            if(re.match(patron, indice)!= None and int(indice) < 12):
+            if(re.match(patron, indice)!= None and int(indice) <= 11):
                 print(muestra_estadisticas_por_indice(Lista_dreamteam, int(indice)))
             else:
-                print("\n[ERROR]: Indice invalido (0 a 12)")
+                print("\n[ERROR]: Indice invalido (0 a 11)")
         case 3:
             if(len(lista_indice) != 0):
                 indice = lista_indice[-1]
@@ -653,7 +653,7 @@ while Flag:
                 print("\n[ERROR]: Deve seleccionar el punto previo antes (punto 2)")
         case 4:
             nombre = input("Ingrese el nombre del jugador: ")
-            if(nombre.isalpha() != False):
+            if(nombre.isalpha() != False or " " in nombre):
                 print(muestra_logros_segun_nombre(Lista_dreamteam, nombre))
             else:
                 print("\n[ERROR]:Solo ingrese letras")

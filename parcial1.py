@@ -1,5 +1,5 @@
 """
-Joaquin Casasola
+Joaquin Casasola / parcial_1
 1E
 """
 import re
@@ -136,15 +136,15 @@ def muestra_logros_segun_nombre(lista:list, nombre:str)-> str:
     <-Recibe una lista y un nombre\n
     ->Retorna un mensaje 
     """
-    nombre = buscar_jugador_por_nombre(nombre)
-    if(re.match(r"[ERROR].+",nombre) != None):
-        return nombre
+    nombre_jugador = buscar_jugador_por_nombre(nombre)
+    if(re.search(r"[ERROR].+",nombre_jugador) != None):
+        return nombre_jugador
     else:
         logros = ""
         for jugador in lista:
-            if(jugador["nombre"] == nombre):
+            if(jugador["nombre"] == nombre_jugador):
                 logros += (("\n").join(jugador["logros"]))
-        mensaje = "\nLos logros de {0} son: \n{1}".format(nombre,logros)
+        mensaje = "\nLos logros de {0} son: \n{1}".format(nombre_jugador,logros)
         return mensaje 
 
 
@@ -194,7 +194,7 @@ def muestra_salon_fama(lista:list, nombre:str)-> str:
     """
     patron = r"Baloncesto$"
     nombre = buscar_jugador_por_nombre(nombre)
-    if(re.match(r"[ERROR].+",nombre) != None):
+    if(re.search(r"[ERROR].+",nombre) != None):
         return nombre
     else:
         Es_salon_de_fama = ""

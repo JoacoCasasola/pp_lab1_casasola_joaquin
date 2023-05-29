@@ -22,47 +22,46 @@ def buscar_jugador_por_nombre(string:str)->str:
     <-Recibe un string\n
     ->Retorna un string 
     """
-    nombre = string
+    if(re.search(r"^[M-m]ic.+|[J-j]ord.+$", string) != None):
+        string = "Michael Jordan"
 
-    if(re.search(r"^[M-m]ic.+|[J-j]ord.+$", nombre) != None):
-        nombre = "Michael Jordan"
+    elif(re.search(r"^[M-m]ag.+|[J-j]ohn.+$", string) != None):
+        string = "Magic Johnson"
 
-    elif(re.search(r"^[M-m]ag.+|[J-j]ohn.+$", nombre) != None):
-        nombre = "Magic Johnson"
+    elif(re.search(r"^[L-l]ar.+|[B-b]ird.+$", string) != None):
+        string = "Larry Bird"
 
-    elif(re.search(r"^[L-l]ar.+|[B-b]ird.+$", nombre) != None):
-        nombre = "Larry Bird"
+    elif(re.search(r"^[C-c]harl.+|[B-b]ark.+$", string) != None):
+        string = "Charles Barkley"
 
-    elif(re.search(r"^[C-c]harl.+|[B-b]ark.+$", nombre) != None):
-        nombre = "Charles Barkley"
+    elif(re.search(r"^[S-s]cot.+|[P-p]ip.+$", string) != None):
+        string = "Scottie Pippen"
 
-    elif(re.search(r"^[S-s]cot.+|[P-p]ip.+$", nombre) != None):
-        nombre = "Scottie Pippen"
+    elif(re.search(r"^[D-d]av.+|[R-r]ob.+$", string) != None):
+        string = "David Robinson"
 
-    elif(re.search(r"^[D-d]av.+|[R-r]ob.+$", nombre) != None):
-        nombre = "David Robinson"
+    elif(re.search(r"^[P-p]at.+|[E-e]wi.+$", string) != None):
+        string = "Patrick Ewing"
 
-    elif(re.search(r"^[P-p]at.+|[E-e]wi.+$", nombre) != None):
-        nombre = "Patrick Ewing"
+    elif(re.search(r"^[K-k]ar.+|[M-m]al.+$", string) != None):
+        string = "Karl Malone"
 
-    elif(re.search(r"^[K-k]ar.+|[M-m]al.+$", nombre) != None):
-        nombre = "Karl Malone"
+    elif(re.search(r"^[J-j]oh.+|[S-s]to.+$", string) != None):
+        string = "John Stockton"
 
-    elif(re.search(r"^[J-j]oh.+|[S-s]to.+$", nombre) != None):
-        nombre = "John Stockton"
+    elif(re.search(r"^[C-c]ly.+|[D-d]re.+$", string) != None):
+        string = "Clyde Drexler"
 
-    elif(re.search(r"^[C-c]ly.+|[D-d]re.+$", nombre) != None):
-        nombre = "Clyde Drexler"
+    elif(re.search(r"^[C-c]hrist.+|[L-l]aet.+$", string) != None):
+        string = "Christian Laettner"
 
-    elif(re.search(r"^[C-c]hr.+|[M-m]ul.+$", nombre) != None):
-        nombre = "Chris Mullin"
+    elif(re.search(r"^[C-c]hr.+|[M-m]ul.+$", string) != None):
+        string = "Chris Mullin"
 
-    elif(re.search(r"^[C-c]hrist.+|[L-l]aet.+$", nombre) != None):
-        nombre = "Christian Laettner"
     else:
-        return "\n[ERROR]: No se a podido encontra ese jugador"
+        string = "\n[ERROR]: No se a podido encontra ese jugador"
     
-    return nombre
+    return string
 
 
 #1
@@ -138,7 +137,7 @@ def muestra_logros_segun_nombre(lista:list, nombre:str)-> str:
     ->Retorna un mensaje 
     """
     nombre = buscar_jugador_por_nombre(nombre)
-    if(nombre == "[ERROR]: No se a podido encontra ese jugador"):
+    if(re.match(r"^[ERROR].+",nombre) != None):
         return nombre
     logros = "\n"
     for jugador in lista:
@@ -195,18 +194,18 @@ def muestra_salon_fama(lista:list, nombre:str)-> str:
     """
     patron = r"Baloncesto$"
     nombre = buscar_jugador_por_nombre(nombre)
-    if(nombre == "[ERROR]: No se a podido encontra ese jugador"):
+    if(re.match(r"^[ERROR].+",nombre) != None):
         return nombre
-    
-    for jugador in lista:
-        if(jugador["nombre"] == nombre):
-            if(re.search(patron, jugador["logros"][-1])):
-                Es_salon_de_fama = "si es miembro del Salón de la Fama"
-            else:
-                Es_salon_de_fama = "es miembro del Salón de la Fama Universitario"
-
-    mensaje = "\n{0} {1}".format(nombre, Es_salon_de_fama)
-    return mensaje
+    else:
+        Es_salon_de_fama = ""
+        for jugador in lista:
+            if(jugador["nombre"] == nombre):
+                if(re.search(patron, jugador["logros"][-1])):
+                    Es_salon_de_fama = "si es miembro del Salón de la Fama"
+                else:
+                    Es_salon_de_fama = "es miembro del Salón de la Fama Universitario"
+        mensaje = "\n{0} {1}".format(nombre, Es_salon_de_fama)
+        return mensaje
 
 
 #7
@@ -661,7 +660,7 @@ while Flag:
             print(muestra_promedio_puntos_por_partido(Lista_dreamteam))
         case 6:
             nombre = input("Ingrese el nombre del jugador: ")
-            if(nombre.isalpha() != False):
+            if(nombre.isalpha() != False or " " in nombre):
                 print(muestra_salon_fama(Lista_dreamteam, nombre))
             else:
                 print("\n[ERROR]:Solo ingrese letras")

@@ -51,7 +51,7 @@ def buscar_jugador_por_nombre(string:str)->str:
 
     elif(re.search(r"^[C-c]ly.+|[D-d]re.+$", string) != None):
         string = "Clyde Drexler"
-
+    
     elif(re.search(r"^[C-c]hrist.+|[L-l]aet.+$", string) != None):
         string = "Christian Laettner"
 
@@ -59,7 +59,7 @@ def buscar_jugador_por_nombre(string:str)->str:
         string = "Chris Mullin"
 
     else:
-        string = "\n[ERROR]: No se a podido encontra ese jugador"
+        string = "[ERROR]: No se a podido encontra ese jugador"
     
     return string
 
@@ -137,15 +137,15 @@ def muestra_logros_segun_nombre(lista:list, nombre:str)-> str:
     ->Retorna un mensaje 
     """
     nombre = buscar_jugador_por_nombre(nombre)
-    if(re.match(r"^[ERROR].+",nombre) != None):
+    if(re.match(r"[ERROR].+",nombre) != None):
         return nombre
-    logros = "\n"
-    for jugador in lista:
-        if(jugador["nombre"] == nombre):
-            logros += (("\n").join(jugador["logros"]))
-
-    mensaje = "\nLos logros de {0} son: \n{1}".format(nombre,logros)
-    return mensaje 
+    else:
+        logros = ""
+        for jugador in lista:
+            if(jugador["nombre"] == nombre):
+                logros += (("\n").join(jugador["logros"]))
+        mensaje = "\nLos logros de {0} son: \n{1}".format(nombre,logros)
+        return mensaje 
 
 
 #5
@@ -194,7 +194,7 @@ def muestra_salon_fama(lista:list, nombre:str)-> str:
     """
     patron = r"Baloncesto$"
     nombre = buscar_jugador_por_nombre(nombre)
-    if(re.match(r"^[ERROR].+",nombre) != None):
+    if(re.match(r"[ERROR].+",nombre) != None):
         return nombre
     else:
         Es_salon_de_fama = ""
@@ -649,7 +649,7 @@ while Flag:
                 guarda_CSV_estadisticas(Lista_dreamteam, indice)
                 print("Archivo exportado con exito!")
             else:
-                print("\n[ERROR]: Deve seleccionar el punto previo antes (punto 2)")
+                print("\n[ERROR]: Debe seleccionar el punto previo antes (punto 2)")
         case 4:
             nombre = input("Ingrese el nombre del jugador: ")
             if(nombre.isalpha() != False or " " in nombre):
@@ -660,7 +660,7 @@ while Flag:
             print(muestra_promedio_puntos_por_partido(Lista_dreamteam))
         case 6:
             nombre = input("Ingrese el nombre del jugador: ")
-            if(nombre.isalpha() != False or " " in nombre):
+            if(nombre.isalpha() != False):
                 print(muestra_salon_fama(Lista_dreamteam, nombre))
             else:
                 print("\n[ERROR]:Solo ingrese letras")

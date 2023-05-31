@@ -574,6 +574,153 @@ def muestra_posicion_en_ranking(lista:list)-> str:
             linea = "{0},{1},{2},{3},{4}\n".format(nombre, posicion_puntos, posicion_rebotes, posicion_asistencias, posicion_robos)
             archivo.write(linea)
 
+
+
+
+
+#24
+"""
+Determinar la cantidad de jugadores que hay por cada posición.
+Ejemplo:
+Base: 2
+Alero: 3
+"""
+def muestra_cantidad_jugadores_por_posicion(lista:list)-> str:
+    """
+    - Muestra la cantidad de jugadores que hay por cada posición\n
+    <-Recibe una lista\n
+    ->Retorna un mensaje 
+    """
+    dict_posiciones = {}
+    for jugador in lista:
+        if(jugador["posicion"] not in dict_posiciones):  
+            dict_posiciones[jugador["posicion"]] = 1
+        else:
+            dict_posiciones[jugador["posicion"]] += 1
+
+    mensaje = "\n"
+    for posicion,cantidad in dict_posiciones.items():
+        mensaje += "{0} : {1}\n".format(posicion, cantidad)
+    return mensaje
+
+
+#25
+"""
+Mostrar la lista de jugadores ordenadas por la cantidad de All-Star de forma descendente. La salida por pantalla debe tener un formato similar a este:
+Michael Jordan (14 veces All Star)
+Magic Johnson (12 veces All-Star)
+"""
+def muestra_jugadores_ordenados_por_all_star(lista:list):
+    """
+    - Muestra la lista de jugadores ordenados por la cantidad de All-Star\n
+    <-Recibe una lista\n
+    ->Retorna un mensaje 
+    """
+    mensaje = "\n"
+    for jugador in lista:
+        for logro in jugador["logros"]:
+            if(re.search(r"All-Star$",logro) != None):
+                mensaje += "{0} ({1})\n".format(jugador["nombre"],logro)
+    return mensaje
+
+
+def muestra_jugador_mas_puntos_totales(lista:list)-> str:
+    """
+    - Muestra el jugador con mayor cantidad de puntos totales\n
+    <-Recibe una lista\n
+    ->Retorna un mensaje 
+    """
+    jugador_con_mas_puntos = None
+    for jugador in lista:
+        if(jugador_con_mas_puntos == None or jugador["estadisticas"]["puntos_totales"] > jugador_con_mas_puntos["estadisticas"]["puntos_totales"]):
+            jugador_con_mas_puntos = jugador
+    mensaje = "- El jugador con mas puntos totales es {0}, con {1} pts".format(jugador_con_mas_puntos["nombre"], jugador_con_mas_puntos["estadisticas"]["puntos_totales"])
+    return mensaje
+
+
+#26
+"""
+Determinar qué jugador tiene las mejores estadísticas en cada valor. La salida por pantalla debe tener un formato similar a este:
+Mayor cantidad de temporadas: Karl Malone (19)
+Mayor cantidad de puntos totales: Karl Malon (36928)
+"""
+def muestra_jugador_con_mejores_estadisticas_en_cada_valor(lista:list):
+    """
+    - Muestra qué jugador tiene las mejores estadísticas en cada valor\n
+    <-Recibe una lista\n
+    ->Retorna un mensaje 
+    """
+    jugador_mas_temporas = buscar_jugador_por_nombre(muestra_jugador_con_mayor_temporadas_jugadas(lista))
+    jugador_mas_puntos = buscar_jugador_por_nombre(muestra_jugador_mas_puntos_totales(lista))
+    jugador_mayor_promedio_puntos = buscar_jugador_por_nombre(muestra_promedio_puntos_por_partido(lista))
+    jugador_mas_rebotes = buscar_jugador_por_nombre(muestra_jugador_con_mayor_rebotes(lista))
+    jugador_mayor_promedio_rebotes = buscar_jugador_por_nombre(muestra_jugadores_promedio_rebotes_por_partido(lista,0))
+    jugador_mas_asistencias = buscar_jugador_por_nombre(muestra_jugador_con_mayor_asistencias(lista))
+    jugador_mayor_promedio_asistencias = buscar_jugador_por_nombre(muestra_jugadores_promedio_asistencias_por_partido(lista,0))
+    jugador_mas_robos = buscar_jugador_por_nombre(muestra_jugador_con_mayor_robos(lista))
+    jugador_mas_bloqueos = buscar_jugador_por_nombre(muestra_jugador_con_mayor_bloqueos(lista))
+    jugador_mayor_porcentaje_tiros_campo = buscar_jugador_por_nombre(muestra_jugadores_porcentaje_tiros_campo(lista,0))
+    jugador_mayor_porcentaje_tiros_libres = buscar_jugador_por_nombre(muestra_jugadores_porcentaje_tiros_libres(lista,0))
+    jugador_mayor_porcentaje_tiros_triples = buscar_jugador_por_nombre(muestra_jugadores_porcentaje_tiros_triples(lista,0))
+
+    mensaje = ""
+    for jugador in lista:
+        if(jugador["nombre"] == jugador_mas_temporas):
+            mensaje += "\nMayor cantidad de temporadas: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["temporadas"])
+
+        if(jugador["nombre"] == jugador_mas_puntos):
+            mensaje += "\nMayor cantidad de puntos totales: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["puntos_totales"])
+        
+        if(jugador["nombre"] == jugador_mayor_promedio_puntos):
+            mensaje += "\nMayor promedio de puntos por partido: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["promedio_puntos_por_partido"])
+        
+        if(jugador["nombre"] == jugador_mas_rebotes):
+            mensaje += "\nMayor cantidad de rebotes: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["rebotes_totales"])
+        
+        if(jugador["nombre"] == jugador_mayor_promedio_rebotes):
+            mensaje += "\nMayor promedio de rebotes por partido: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["promedio_rebotes_por_partido"])
+     
+        if(jugador["nombre"] == jugador_mas_asistencias):
+            mensaje += "\nMayor cantidad de asistencias: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["asistencias_totales"])
+        
+        if(jugador["nombre"] == jugador_mayor_promedio_asistencias):
+            mensaje += "\nMayor promedio de asistencias por partido: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["promedio_asistencias_por_partido"])
+        
+        if(jugador["nombre"] == jugador_mas_robos):
+            mensaje += "\nMayor cantidad de robos: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["robos_totales"])
+        
+        if(jugador["nombre"] == jugador_mas_bloqueos):
+            mensaje += "\nMayor cantidad de bloqueos: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["bloqueos_totales"])
+        
+        if(jugador["nombre"] == jugador_mayor_porcentaje_tiros_campo):
+            mensaje += "\nMayor porcentaje de tiros campo: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["porcentaje_tiros_de_campo"])
+        
+        if(jugador["nombre"] == jugador_mayor_porcentaje_tiros_libres):
+            mensaje += "\nMayor porcentaje de tiros libres: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["porcentaje_tiros_libres"])
+        
+        if(jugador["nombre"] == jugador_mayor_porcentaje_tiros_triples):
+            mensaje += "\nMayor porcentaje de tiros triples: {0} ({1})\n".format(jugador["nombre"],jugador["estadisticas"]["porcentaje_tiros_triples"])
+    return mensaje
+
+
+#27
+"""
+Determinar qué jugador tiene las mejores estadísticas de todos.
+"""
+def muestra_jugador_con_mejores_estadisticas(lista:list):
+    """
+    - Muestra qué jugador tiene las mejores estadísticas\n
+    <-Recibe una lista\n
+    ->Retorna un mensaje 
+    """
+    pass
+
+
+
+
+
+
+
 ruta = "C:\\Users\\Admin\\Desktop\\Prog. y Lab. 1\\Primer_parcial.py\\Data_parcial1.json"
 Lista_dreamteam = lee_json(ruta)
 
@@ -625,17 +772,18 @@ while Flag:
     print("0. Salir del programa")
 
     Respuesta_txt = input("\nIngrese la opcion elegida: ")
-    patron = r"^[0-9]$|^1[0-9]$|^20$|^23$"
+    patron = r"^[0-9]$|^1[0-9]$|^20$|^2[3-7]$"
     if(re.match(patron, Respuesta_txt) != None):
         Respuesta_int = int(Respuesta_txt)
     else:
-        print("\n[ERROR]: Ingrese un numero (del 0 al 23 exceptuando 21 y 22)\n")
+        print("\n[ERROR]: Ingrese un numero (del 0 al 27 exceptuando 21 y 22)\n")
         continue
 
 
     match(Respuesta_int):
         case 1:
             print(muestra_lista_jugadores(Lista_dreamteam))
+
         case 2:
             indice = input("Ingrese el numero de indice de el jugador:")
             patron = r"^[\d]+$"
@@ -643,6 +791,7 @@ while Flag:
                 print(muestra_estadisticas_por_indice(Lista_dreamteam, int(indice)))
             else:
                 print("\n[ERROR]: Indice invalido (0 a 11)")
+
         case 3:
             if(len(lista_indice) != 0):
                 indice = lista_indice[-1]
@@ -650,20 +799,24 @@ while Flag:
                 print("Archivo exportado con exito!")
             else:
                 print("\n[ERROR]: Debe seleccionar el punto previo antes (punto 2)")
+
         case 4:
             nombre = input("Ingrese el nombre del jugador: ")
             if(nombre.isalpha() != False or " " in nombre):
                 print(muestra_logros_segun_nombre(Lista_dreamteam, nombre))
             else:
                 print("\n[ERROR]:Solo ingrese letras")
+
         case 5:
             print(muestra_promedio_puntos_por_partido(Lista_dreamteam))
+
         case 6:
             nombre = input("Ingrese el nombre del jugador: ")
             if(nombre.isalpha() != False):
                 print(muestra_salon_fama(Lista_dreamteam, nombre))
             else:
                 print("\n[ERROR]:Solo ingrese letras")
+
         case 7:
             print(muestra_jugador_con_mayor_rebotes(Lista_dreamteam))
 
@@ -750,36 +903,19 @@ while Flag:
 
         case 23:
             muestra_posicion_en_ranking(Lista_dreamteam)
-            print("""\nArchivo exportado con exito!
-                                ⢀⣠⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⡿⠛⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣀⠀⠀⠀⣼⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣷⣆⣴⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⡿⠋⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⣿⡟⠁⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⠟⠁⠀⠀⠀⢀⣠⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⣿⡇⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠒⠯⠟⡿⠛⠧⠀⠀⠀⢠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⡿⠛⠋⠛⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣿⣿⣿⣿⣿⡿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⢿⣿⣿⣿⣿⣿⣿⣷⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣾⣿⣿⣿⣿⣿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⢿⣿⣿⣿⣿⣷⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⡿⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⢿⣿⣿⣿⣿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀ ⣠⣴⣿⣿⣿⡿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⢿⣿⣿⣿⣦⣤  ⠀⣀⣤⡄
-⠀⠀⢀⣀⣴⣾⣿⣿⠟⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⡿⠋⠀
-⢸⣿⣿⣿⣿⣿⠟⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⣿⡿⠛⠉⠀⠀⠀
-⠀⠙⠛⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-            """)
+            print("\nArchivo exportado con exito!")
+
+        case 24:
+            print(muestra_cantidad_jugadores_por_posicion(Lista_dreamteam))
+
+        case 25:
+            print(muestra_jugadores_ordenados_por_all_star(Lista_dreamteam))
+
+        case 26:
+            print(muestra_jugador_con_mejores_estadisticas(Lista_dreamteam))
+
+        case 27:
+            print(muestra_jugador_con_mejores_estadisticas(Lista_dreamteam))
 
         case 0:
             break   
